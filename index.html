@@ -19,8 +19,6 @@
             margin-left: 150px;
         }
 
-        #connectionState {
-        }
     </style>
     <link href="css/bootstrap-responsive.css" rel="stylesheet">
 
@@ -34,7 +32,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </a>
-                <a class="brand" href="#">Offline Storage Demo  v1.0</a>
+                <a class="brand" href="#">Offline Storage Demo  v1.1</a>
                 <span id="connectionState" class="label label-success" style="margin-top: 10px;">Online</span>
                 <div class="nav-collapse collapse">
                 </div>
@@ -137,17 +135,6 @@
             }
         });
 
-        $(document.body).bind("online", function () {
-            $("#connectionState").removeClass("label label-warning");
-            $("#connectionState").addClass("label label-success");
-            $("#connectionState").text("Online");
-        });
-
-        $(document.body).bind("offline", function () {
-            $("#connectionState").removeClass("label label-success");
-            $("#connectionState").addClass("label label-warning");
-            $("#connectionState").text("Offline");
-        });
     </script>
 </body>
 </html>
