@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html manifest="cache.manifest">
+<head>
+    <title>Offline Demo</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+        }
+
+        #employeeList {
+            margin-left: 150px;
+        }
+
+        #connectionState {
+            margin-top: 10px;
+        }
+    </style>
+
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+
+    <script>
+        // Check if a new cache is available on page load.
+        window.addEventListener('load', function (e) {
+            window.applicationCache.addEventListener('updateready', function (e) {
+                if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
+                    // Browser downloaded a new app cache.
+                    // Swap it in and reload the page to get the new hotness.
+                    window.applicationCache.swapCache();
+                    if (confirm('A new version of this site is available. Load it?')) {
+                        window.location.reload();
+                    }
+                } else {
+                    // Manifest didn't changed. Nothing new to server.
+                }
+            }, false);
+
+        }, false);
+
+    </script>
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </a>
+                <a class="brand" href="#">Offline Storage Demo  v1.3</a>
+                <span id="connectionState" class="label label-success" style="margin-top: 10px;">Online</span>
+                <div class="nav-collapse collapse">
+
+                </div>
+                <!--/.nav-collapse -->
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <form class="form-horizontal well" data-bind="submit:addEmployee">
+            <fieldset>
+                <legend>New Employee</legend>
+                <div class="control-group">
+                    <label class="control-label" for="name">Name:</label>
+                    <div class="controls">
+                        <input type="text" class="input-xlarge" id="name" data-bind='value: employeeToAdd, valueUpdate: "afterkeydown"'>
+                            <button class="btn btn-inverse btn-small" type="submit"  data-bind="enable: employeeToAdd().length > 0">Add</button>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <ul id="employeeList" data-bind="foreach: employees">
+                        <li>
+                            <span data-bind="text: name"></span>&nbsp;
+                            <a href="#" data-bind="click: $parent.removeEmployee">Remove</a>
+
+                        </li>
+                    </ul>
+                </div>
+                <div class="form-actions">
+                    <button class="btn" data-bind="click: $root.save">Save</button>
+                    <button class="btn" data-bind="click: $root.clear">Clear</button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    <!-- /container -->
+
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/knockout-2.1.0.js"></script>
+    <script src="js/underscore-min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script>
+
+        var Employee = function (name) {
+            this.name = name;
+        };
+
+        var ViewModel = function () {
+            var self = this;
+
+            self.employees = ko.observableArray();
+            self.employeeToAdd = ko.observable("");
+
+            self.addEmployee = function () {
+                if (self.employeeToAdd() != "") {
+                    self.employees.push(new Employee(self.employeeToAdd()));
+                    self.employeeToAdd("");
+                }
+            };
+
+            self.removeEmployee = function (employee) {
+                self.employees.remove(employee)
+            };
+
+            self.clear = function () {
+                self.employees.removeAll();
+            };
+
+            self.save = function () {
+                if (window.localStorage) {
+                    window.localStorage.setItem("employees", JSON.stringify(self.employees()));
+                }
+            };
+
+            self.load = function () {
+                if (window.localStorage && window.localStorage.getItem("employees")) {
+                    self.employees = ko.observableArray(JSON.parse(window.localStorage.getItem("employees")));
+                }
+            };
+        };
+
+        $(function () {
+            var viewModel = new ViewModel();
+            viewModel.load();
+            ko.applyBindings(viewModel);
+
+
+        });
+
+        document.body.addEventListener("online", function () {
+            $("#connectionState").removeClass("label label-warning");
+            $("#connectionState").addClass("label label-success");
+            $("#connectionState").text("Online");
+        });
+
+        document.body.addEventListener("offline", function () {
+            $("#connectionState").removeClass("label label-success");
+            $("#connectionState").addClass("label label-warning");
+            $("#connectionState").text("Offline");
+        });
+    </script>
+</body>
+</html>
