@@ -10,7 +10,7 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+            padding-top: 60px;
         }
 
         #employeeList {
@@ -18,29 +18,10 @@
         }
 
         #connectionState {
-            margin-top: 10px;
         }
     </style>
-
     <link href="css/bootstrap-responsive.css" rel="stylesheet">
 
-    <script>
-        window.addEventListener('load', function (e) {
-            window.applicationCache.addEventListener('updateready', function (e) {
-                if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
-                    // Browser downloaded a new app cache.
-                    // Swap it in and reload the page to get the new hotness.
-                    window.applicationCache.swapCache();
-                    if (confirm('A new version of this site is available. Load it?')) {
-                        window.location.reload();
-                    }
-                } else {
-                    // Manifest didn't changed. Nothing new to server.
-                }
-            }, false);
-
-        }, false);
-    </script>
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -54,7 +35,6 @@
                 <a class="brand" href="#">Offline Storage Demo  v1.0</a>
                 <span id="connectionState" class="label label-success" style="margin-top: 10px;">Online</span>
                 <div class="nav-collapse collapse">
-
                 </div>
                 <!--/.nav-collapse -->
             </div>
@@ -69,7 +49,7 @@
                     <label class="control-label" for="name">New Employee:</label>
                     <div class="controls">
                         <input type="text" class="input-xlarge" id="name" data-bind='value: employeeToAdd, valueUpdate: "afterkeydown"'>
-                            <button class="btn btn-inverse btn-small" type="submit"  data-bind="enable: employeeToAdd().length > 0">Add</button>
+                        <button class="btn btn-inverse btn-small" type="submit" data-bind="enable: employeeToAdd().length > 0">Add</button>
                     </div>
                 </div>
                 <div class="control-group">
@@ -142,13 +122,26 @@
 
         });
 
-        document.body.addEventListener("online", function () {
+        $(window.applicationCache).bind("updateready", function (event) {
+            if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
+                // Browser downloaded a new app cache.
+                // Swap it in and reload the page to get the new hotness.
+                window.applicationCache.swapCache();
+                if (confirm('A new version of this site is available. Load it?')) {
+                    window.location.reload();
+                }
+            } else {
+                // Manifest didn't changed. Nothing new to server.
+            }
+        });
+
+        $(document.body).bind("online", function () {
             $("#connectionState").removeClass("label label-warning");
             $("#connectionState").addClass("label label-success");
             $("#connectionState").text("Online");
         });
 
-        document.body.addEventListener("offline", function () {
+        $(document.body).bind("offline", function () {
             $("#connectionState").removeClass("label label-success");
             $("#connectionState").addClass("label label-warning");
             $("#connectionState").text("Offline");
