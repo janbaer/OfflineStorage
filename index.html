@@ -25,7 +25,6 @@
     <link href="css/bootstrap-responsive.css" rel="stylesheet">
 
     <script>
-        // Check if a new cache is available on page load.
         window.addEventListener('load', function (e) {
             window.applicationCache.addEventListener('updateready', function (e) {
                 if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
@@ -41,7 +40,6 @@
             }, false);
 
         }, false);
-
     </script>
 </head>
 <body>
@@ -53,7 +51,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </a>
-                <a class="brand" href="#">Offline Storage Demo  v1.3</a>
+                <a class="brand" href="#">Offline Storage Demo  v1.0</a>
                 <span id="connectionState" class="label label-success" style="margin-top: 10px;">Online</span>
                 <div class="nav-collapse collapse">
 
@@ -66,9 +64,9 @@
     <div class="container">
         <form class="form-horizontal well" data-bind="submit:addEmployee">
             <fieldset>
-                <legend>New Employee</legend>
+                <legend>Employees</legend>
                 <div class="control-group">
-                    <label class="control-label" for="name">Name:</label>
+                    <label class="control-label" for="name">New Employee:</label>
                     <div class="controls">
                         <input type="text" class="input-xlarge" id="name" data-bind='value: employeeToAdd, valueUpdate: "afterkeydown"'>
                             <button class="btn btn-inverse btn-small" type="submit"  data-bind="enable: employeeToAdd().length > 0">Add</button>
@@ -95,7 +93,6 @@
 
     <script src="js/jquery.min.js"></script>
     <script src="js/knockout-2.1.0.js"></script>
-    <script src="js/underscore-min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script>
 
@@ -117,7 +114,7 @@
             };
 
             self.removeEmployee = function (employee) {
-                self.employees.remove(employee)
+                self.employees.remove(employee);
             };
 
             self.clear = function () {
