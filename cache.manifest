@@ -1,14 +1,15 @@
 ﻿CACHE MANIFEST
 
-#version 1.4 10-15-2012
+#version 1.5 10-28-2012
+
+NETWORK:
+online.html
 
 CACHE:
 
-#images
-
-
-#internal HTML documents
+#HTML documents
 index.html
+offline.html
 
 #style sheets
 css/bootstrap-responsive.css
@@ -25,5 +26,6 @@ js/knockout-2.1.0.js
 js/underscore-min.js
 js/bootstrap.min.js
 
-NETWORK:
-*
+
+FALLBACK:
+/ /offline.html
