@@ -2,11 +2,7 @@
 
 #version 1.5 10-28-2012
 
-NETWORK:
-online.html
-
 CACHE:
-
 #HTML documents
 index.html
 offline.html
@@ -27,4 +23,7 @@ js/underscore-min.js
 js/bootstrap.min.js
 
 FALLBACK:
-/*.html offline.html
+/ offline.html
+
+NETWORK:
+online.html
