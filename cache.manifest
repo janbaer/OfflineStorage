@@ -23,7 +23,7 @@ js/underscore-min.js
 js/bootstrap.min.js
 
 FALLBACK:
-/online.html offline.html
+/ offline.html
 
 NETWORK:
-online.html
+*
