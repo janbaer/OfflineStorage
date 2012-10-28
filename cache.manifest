@@ -26,6 +26,5 @@ js/knockout-2.1.0.js
 js/underscore-min.js
 js/bootstrap.min.js
 
-
 FALLBACK:
-online.html /offline.html
+/*.html offline.html
